@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>omicreate</title>
+<meta name="description" content="小さくて役に立つツールを、AIエージェントと一緒に作っています。">
+<style>
+:root {
+  --bg: #FBF7F0;
+  --surface: #FFFFFF;
+  --ink: #2E2A25;
+  --ink-2: #8C8377;
+  --line: #E8E0D1;
+  --accent: #E8590C;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1B1916; --surface: #27231E;
+    --ink: #EDE6DB; --ink-2: #9C9285; --line: #3B352C; --accent: #F26A2E;
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.8;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  padding: 48px 20px;
+}
+main { max-width: 560px; width: 100%; }
+h1 {
+  font-size: 22px;
+  letter-spacing: .14em;
+  margin-bottom: 6px;
+}
+h1::after {
+  content: "";
+  display: block;
+  width: 36px; height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin-top: 10px;
+}
+.tagline { color: var(--ink-2); font-size: 14px; margin: 14px 0 34px; }
+.card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .12s ease;
+}
+.card:active { transform: scale(.98); }
+.card .name { font-weight: 800; font-size: 15px; }
+.card .desc { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+footer { margin-top: 40px; font-size: 12px; color: var(--ink-2); }
+footer a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1>omicreate</h1>
+  <p class="tagline">小さくて役に立つツールを、AIエージェントと一緒に作っています。</p>
+
+  <a class="card" href="https://omicreate.github.io/kyou-yaru/">
+    <div class="name">きょうやる</div>
+    <div class="desc">今日やることだけに集中する、シンプルなToDoアプリ（PWA）</div>
+  </a>
+  <a class="card" href="https://omicreate.github.io/soft-tennis-note/">
+    <div class="name">ソフトテニス試合ノート</div>
+    <div class="desc">試合の記録・分析ができる無料アプリ（PWA）</div>
+  </a>
+  <a class="card" href="https://omicreate.github.io/soft-tennis-rule-drill/">
+    <div class="name">ソフテニルールドリル</div>
+    <div class="desc">ルールをクイズで覚える無料アプリ（PWA）</div>
+  </a>
+  <a class="card" href="https://www.instagram.com/softtennis_iq/">
+    <div class="name">ソフトテニスIQ</div>
+    <div class="desc">「試合脳」を鍛える局面クイズ（Instagram / Threads）</div>
+  </a>
+
+  <footer>
+    &copy; 2026 omicreate ・ <a href="https://github.com/omicreate">GitHub</a>
+  </footer>
+</main>
+</body>
+</html>
