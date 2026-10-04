@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>STIQ Poster 連携</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>TikTok 連携</h1>
+  <p class="meta">STIQ Poster</p>
+  <p id="msg">このページのアドレスをコピーして、作業中の画面に貼り付けてください。</p>
+  <p class="en">Copy this page's address and paste it into the operator's tool.</p>
+  <div class="code" id="url"></div>
+  <button type="button" id="copy">アドレスをコピー</button>
+  <p class="meta" style="margin-top: 16px">この画面は外部へ何も送信しません。 / This page sends nothing anywhere.</p>
+</main>
+<script>
+  // 認可コードは画面に出すだけ。保存・送信はしない（交換は運営者のパソコンで行う）
+  const q = new URLSearchParams(location.search);
+  const box = document.getElementById('url');
+  box.textContent = location.href;
+  if (q.get('error')) document.getElementById('msg').textContent = '連携は完了しませんでした：' + q.get('error');
+  document.getElementById('copy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(location.href); document.getElementById('copy').textContent = 'コピーしました'; } catch {}
+  });
+</script>
+</body>
+</html>
