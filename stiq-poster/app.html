@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>STIQ Poster</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  main { max-width: 760px; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+  .who { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+  .who img { width: 36px; height: 36px; border-radius: 50%; background: var(--line); }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .grid { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 20px; }
+  @media (max-width: 640px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+  video { width: 100%; border-radius: 8px; background: #000; aspect-ratio: 9 / 16; }
+  label.f { display: block; font-size: 13px; font-weight: 700; margin: 14px 0 6px; }
+  select, textarea { width: 100%; font: inherit; font-size: 14px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+  textarea { min-height: 150px; resize: vertical; }
+  .count { font-size: 12px; color: var(--ink-2); text-align: right; }
+  .row { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; }
+  .row label { display: flex; align-items: center; gap: 6px; min-height: 44px; }
+  .row input:disabled + span { color: var(--ink-2); text-decoration: line-through; }
+  .hint { font-size: 13px; color: var(--ink-2); }
+  .notice { font-size: 13px; color: var(--ink-2); margin-top: 16px; }
+  .status { margin-top: 14px; font-size: 14px; font-weight: 700; }
+  .err { color: #B42318; }
+  button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  ul.q { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+  ul.q button { width: 100%; text-align: left; background: var(--bg); color: var(--ink); border: 1px solid var(--line); font-weight: 500; margin: 0; }
+  ul.q button[aria-pressed="true"] { border-color: var(--accent); outline: 2px solid var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <div class="bar">
+    <div>
+      <h1>STIQ Poster</h1>
+      <p class="meta" style="margin: 0">Post Soft Tennis IQ quiz videos to TikTok</p>
+    </div>
+    <div class="who" id="who"></div>
+  </div>
+
+  <div class="card" id="offline" hidden>
+    <p class="err">The local STIQ Poster server is not running on this computer.</p>
+    <p class="hint">Start it with <code style="display:inline;padding:2px 6px">npm run poster</code> and reload this page.</p>
+  </div>
+
+  <div class="card" id="connect" hidden>
+    <p>Connect the Soft Tennis IQ TikTok account to post videos.</p>
+    <button type="button" id="btnConnect">Connect TikTok account</button>
+  </div>
+
+  <div id="composer" hidden>
+    <div class="card">
+      <label class="f" style="margin-top: 0">1. Choose a video</label>
+      <ul class="q" id="queue"></ul>
+    </div>
+
+    <div class="card grid" id="editor" hidden>
+      <div>
+        <video id="preview" controls playsinline></video>
+      </div>
+      <div>
+        <label class="f" for="caption" style="margin-top: 0">2. Caption</label>
+        <textarea id="caption" maxlength="2200"></textarea>
+        <div class="count"><span id="count">0</span> / 2200</div>
+
+        <label class="f" for="privacy">3. Who can view this video</label>
+        <select id="privacy"><option value="" selected disabled>Select</option></select>
+
+        <label class="f">4. Allow users to</label>
+        <div class="row">
+          <label><input type="checkbox" id="allowComment"><span>Comment</span></label>
+          <label><input type="checkbox" id="allowDuet"><span>Duet</span></label>
+          <label><input type="checkbox" id="allowStitch"><span>Stitch</span></label>
+        </div>
+
+        <label class="f">5. Disclose video content</label>
+        <div class="row"><label><input type="checkbox" id="disclose"><span>This video promotes a brand, product or service</span></label></div>
+        <div id="discloseOpts" hidden>
+          <div class="row">
+            <label><input type="checkbox" id="brandOrganic"><span>Your brand</span></label>
+            <label><input type="checkbox" id="brandedContent"><span>Branded content</span></label>
+          </div>
+          <p class="hint" id="discloseHint"></p>
+        </div>
+
+        <p class="notice" id="consent">By posting, you agree to TikTok's <a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noopener">Music Usage Confirmation</a>.</p>
+        <button type="button" id="btnPost" disabled>Post to TikTok</button>
+        <div class="status" id="status" role="status"></div>
+      </div>
+    </div>
+  </div>
+
+  <nav>
+    <a href="./">About</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+  </nav>
+</main>
+<script>
+const API = 'http://127.0.0.1:4175';
+const LABEL = { PUBLIC_TO_EVERYONE: 'Everyone', MUTUAL_FOLLOW_FRIENDS: 'Friends', FOLLOWER_OF_CREATOR: 'Followers', SELF_ONLY: 'Only me' };
+const $ = (id) => document.getElementById(id);
+let creator = null, current = null;
+
+async function api(path, opts) {
+  const r = await fetch(API + path, opts);
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.error || r.status);
+  return j;
+}
+
+async function init() {
+  let st;
+  try { st = await api('/api/status'); } catch { $('offline').hidden = false; return; }
+  if (!st.connected) { $('connect').hidden = false; return; }
+  creator = st.creator;
+  const who = $('who');
+  who.innerHTML = '';
+  if (creator.avatar) { const img = document.createElement('img'); img.src = creator.avatar; img.alt = ''; who.append(img); }
+  const t = document.createElement('div');
+  t.innerHTML = `<div style="font-weight:700"></div><div class="hint"></div>`;
+  t.children[0].textContent = creator.nickname || creator.username;
+  t.children[1].textContent = '@' + creator.username + (st.sandbox ? ' · Sandbox' : '');
+  who.append(t);
+  const sel = $('privacy');
+  for (const p of creator.privacyOptions) { const o = document.createElement('option'); o.value = p; o.textContent = LABEL[p] || p; sel.append(o); }
+  for (const [id, off] of [['allowComment', creator.commentDisabled], ['allowDuet', creator.duetDisabled], ['allowStitch', creator.stitchDisabled]]) $(id).disabled = off;
+  $('composer').hidden = false;
+  const q = await api('/api/queue');
+  const ul = $('queue');
+  for (const v of q) {
+    const li = document.createElement('li');
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-pressed', 'false');
+    b.textContent = `No.${v.no}  ${v.question}`;
+    b.addEventListener('click', () => pick(v, b));
+    li.append(b); ul.append(li);
+  }
+}
+
+function pick(v, btn) {
+  current = v;
+  document.querySelectorAll('#queue button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+  $('editor').hidden = false;
+  $('preview').src = `${API}/video/${v.no}`;
+  $('caption').value = v.caption;
+  $('count').textContent = v.caption.length;
+  $('status').textContent = '';
+  refresh();
+}
+
+function refresh() {
+  const disclose = $('disclose').checked;
+  $('discloseOpts').hidden = !disclose;
+  const branded = disclose && $('brandedContent').checked;
+  const organic = disclose && $('brandOrganic').checked;
+  // Branded content cannot be private
+  const self = [...$('privacy').options].find((o) => o.value === 'SELF_ONLY');
+  if (self) { self.disabled = branded; if (branded && $('privacy').value === 'SELF_ONLY') $('privacy').value = ''; }
+  $('discloseHint').textContent = branded ? 'Your video will be labeled as "Paid partnership".' : organic ? 'Your video will be labeled as "Promotional content".' : disclose ? 'Select at least one option.' : '';
+  $('consent').innerHTML = branded
+    ? 'By posting, you agree to TikTok\'s <a href="https://www.tiktok.com/legal/page/global/bc-policy/en" target="_blank" rel="noopener">Branded Content Policy</a> and <a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noopener">Music Usage Confirmation</a>.'
+    : 'By posting, you agree to TikTok\'s <a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noopener">Music Usage Confirmation</a>.';
+  $('btnPost').disabled = !current || !$('privacy').value || (disclose && !branded && !organic);
+}
+
+['privacy', 'disclose', 'brandOrganic', 'brandedContent'].forEach((id) => $(id).addEventListener('change', refresh));
+$('caption').addEventListener('input', () => { $('count').textContent = $('caption').value.length; });
+
+$('btnConnect').addEventListener('click', async () => { const { url } = await api('/api/auth-url'); location.href = url; });
+
+$('btnPost').addEventListener('click', async () => {
+  const s = $('status');
+  $('btnPost').disabled = true;
+  s.className = 'status'; s.textContent = 'Uploading…';
+  try {
+    const { publishId } = await api('/api/post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+      no: current.no, caption: $('caption').value, privacy: $('privacy').value,
+      allowComment: $('allowComment').checked, allowDuet: $('allowDuet').checked, allowStitch: $('allowStitch').checked,
+      brandOrganic: $('disclose').checked && $('brandOrganic').checked, brandedContent: $('disclose').checked && $('brandedContent').checked, agreed: true,
+    }) });
+    s.textContent = 'Uploaded. It may take a few minutes for the video to appear on your TikTok profile.';
+    for (let i = 0; i < 36; i++) {
+      await new Promise((r) => setTimeout(r, 5000));
+      const st = await api('/api/post-status?id=' + encodeURIComponent(publishId));
+      if (st.status === 'PUBLISH_COMPLETE') { s.textContent = 'Posted to TikTok.'; return; }
+      if (st.status === 'FAILED') throw new Error(st.failReason || 'failed');
+    }
+  } catch (e) { s.className = 'status err'; s.textContent = 'Could not post: ' + e.message; $('btnPost').disabled = false; }
+});
+
+if (new URLSearchParams(location.search).get('connected') === '1') history.replaceState(null, '', location.pathname);
+init();
+</script>
+</body>
+</html>

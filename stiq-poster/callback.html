@@ -16,11 +16,13 @@
   <p class="en">Copy this page's address and paste it into the operator's tool.</p>
   <div class="code" id="url"></div>
   <button type="button" id="copy">アドレスをコピー</button>
-  <p class="meta" style="margin-top: 16px">この画面は外部へ何も送信しません。 / This page sends nothing anywhere.</p>
+  <p class="meta" style="margin-top: 16px">この画面は外部のサーバーへ何も送信しません（運営者のパソコン内の STIQ Poster にだけ渡します）。 / This page sends nothing to any external server; it only hands the result to STIQ Poster on the operator's own computer.</p>
 </main>
 <script>
   // 認可コードは画面に出すだけ。保存・送信はしない（交換は運営者のパソコンで行う）
   const q = new URLSearchParams(location.search);
+  // 投稿画面から始めた連携は、この PC の STIQ Poster（127.0.0.1）へ渡す
+  if ((q.get('state') || '').startsWith('local-')) location.replace('http://127.0.0.1:4175/callback' + location.search);
   const box = document.getElementById('url');
   box.textContent = location.href;
   if (q.get('error')) document.getElementById('msg').textContent = '連携は完了しませんでした：' + q.get('error');
