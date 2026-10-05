@@ -43,6 +43,11 @@
     <div class="who" id="who"></div>
   </div>
 
+  <div class="card" id="status0" hidden>
+    <p>Connecting to STIQ Poster on this computer…</p>
+    <p class="hint">If Chrome asks to allow access to devices on your local network, choose <strong>Allow</strong>.</p>
+  </div>
+
   <div class="card" id="offline" hidden>
     <p class="err">The local STIQ Poster server is not running on this computer.</p>
     <p class="hint">Start it with <code style="display:inline;padding:2px 6px">npm run poster</code> and reload this page.</p>
@@ -116,7 +121,9 @@ async function api(path, opts) {
 
 async function init() {
   let st;
-  try { st = await api('/api/status'); } catch { $('offline').hidden = false; return; }
+  // Chrome asks once whether this page may reach the local STIQ Poster server
+  const wait = setTimeout(() => { $('status0').hidden = false; }, 2500);
+  try { st = await api('/api/status'); } catch { $('offline').hidden = false; return; } finally { clearTimeout(wait); $('status0').hidden = true; }
   if (!st.connected) { $('connect').hidden = false; return; }
   creator = st.creator;
   const who = $('who');
