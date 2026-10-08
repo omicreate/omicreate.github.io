@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>omicreate</title>
-<meta name="description" content="小さくて役に立つツールを、AIエージェントと一緒に作っています。">
+<title>omicreate — free web apps for racket sports</title>
+<meta name="description" content="Free, offline-ready web apps for soft tennis and pickleball. ソフトテニスとピックルボールの無料Webアプリ。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://omicreate.github.io/">
+<meta property="og:title" content="omicreate">
+<meta property="og:description" content="Free, offline-ready web apps for soft tennis and pickleball. ソフトテニスとピックルボールの無料Webアプリ。">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://omicreate.github.io/">
 <style>
 :root {
   --bg: #FBF7F0;
@@ -60,6 +66,12 @@ h1::after {
 .card:active { transform: scale(.98); }
 .card .name { font-weight: 800; font-size: 15px; }
 .card .desc { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+.card { display: flex; gap: 14px; align-items: center; }
+.card:hover { border-color: var(--accent); }
+.card img { width: 48px; height: 48px; border-radius: 12px; flex: none; }
+.card .ja { font-size: 12px; color: var(--ink-2); }
+h2 { font-size: 12px; letter-spacing: .14em; color: var(--ink-2); text-transform: uppercase; margin: 28px 0 10px; }
+.tagline .ja { display: block; margin-top: 4px; }
 footer { margin-top: 40px; font-size: 12px; color: var(--ink-2); }
 footer a { color: inherit; }
 </style>
@@ -67,27 +79,47 @@ footer a { color: inherit; }
 <body>
 <main>
   <h1>omicreate</h1>
-  <p class="tagline">小さくて役に立つツールを、AIエージェントと一緒に作っています。</p>
+  <p class="tagline">Free web apps for racket sports — no install, no sign-up, works offline. Made by a solo developer in Japan, together with AI agents.
+    <span class="ja" lang="ja">ソフトテニスとピックルボールの無料Webアプリを、AIエージェントと一緒に個人で作っています。</span></p>
 
-  <a class="card" href="https://omicreate.github.io/softtennis-iq/?src=gh_home">
-    <div class="name">ソフトテニスIQ アプリ</div>
-    <div class="desc">ルールドリル・陣形ラボ・試合ノートをひとつにまとめた無料アプリ（PWA）</div>
-  </a>
+  <h2>Apps</h2>
   <a class="card" href="https://omicreate.github.io/pickle-asobi/?src=gh_home">
-    <div class="name">ピクルくんとあそぼ</div>
-    <div class="desc">スマホ・タブレット1台を囲んで、親子・なかまで遊ぶピックルボールのミニゲーム集（日本語・English）</div>
+    <img src="https://omicreate.github.io/pickle-asobi/icon-192.png" alt="" loading="lazy">
+    <div>
+      <div class="name">Play with Pikuru <span class="ja" lang="ja">ピクルくんとあそぼ</span></div>
+      <div class="desc">Pickleball party games for one phone or tablet. English / 日本語</div>
+      <div class="desc" lang="ja">1台を囲んで、親子・なかまで遊ぶピックルボールのミニゲーム集</div>
+    </div>
+  </a>
+  <a class="card" href="https://omicreate.github.io/softtennis-iq/?src=gh_home">
+    <img src="https://omicreate.github.io/softtennis-iq/icon-192.png" alt="" loading="lazy">
+    <div>
+      <div class="name">Soft Tennis IQ <span class="ja" lang="ja">ソフトテニスIQ</span></div>
+      <div class="desc">Rule drills, a formation board and a match notebook for players. 日本語</div>
+      <div class="desc" lang="ja">ルールドリル・陣形ラボ・試合ノートをひとつにまとめた無料アプリ</div>
+    </div>
   </a>
   <a class="card" href="https://omicreate.github.io/softtennis-asobi/?src=gh_home">
-    <div class="name">ホークアイ先生とあそぼ</div>
-    <div class="desc">1台を囲んで遊ぶ、ソフトテニスのミニゲーム集</div>
+    <img src="https://omicreate.github.io/softtennis-asobi/icon-192.png" alt="" loading="lazy">
+    <div>
+      <div class="name">Hawkeye-sensei to Asobo <span class="ja" lang="ja">ホークアイ先生とあそぼ</span></div>
+      <div class="desc">Soft tennis party games for one phone or tablet. 日本語</div>
+      <div class="desc" lang="ja">1台を囲んで遊ぶ、ソフトテニスのミニゲーム集</div>
+    </div>
   </a>
+
+  <h2>Short videos</h2>
   <a class="card" href="https://www.instagram.com/softtennis_iq/">
-    <div class="name">ソフトテニスIQ</div>
-    <div class="desc">「試合脳」を鍛える局面クイズ（Instagram / Threads）</div>
+    <div>
+      <div class="name">Soft Tennis IQ <span class="ja" lang="ja">@softtennis_iq</span></div>
+      <div class="desc" lang="ja">「試合脳」を鍛える局面クイズ（Instagram / Threads）</div>
+    </div>
   </a>
   <a class="card" href="https://www.instagram.com/pickleballiq_jp/">
-    <div class="name">ピックルボールIQ</div>
-    <div class="desc">ルール・立ち位置・ダブルスの判断を3択クイズで（Instagram / Threads）</div>
+    <div>
+      <div class="name">Pickleball IQ <span class="ja" lang="ja">@pickleballiq_jp</span></div>
+      <div class="desc" lang="ja">ルール・立ち位置・ダブルスの判断を3択クイズで（Instagram / Threads）</div>
+    </div>
   </a>
 
   <footer>
