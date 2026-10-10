@@ -1,33 +1,132 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>STIQ Poster</title>
-<meta name="description" content="ソフトテニスIQが自分の動画を予約投稿するための社内ツール。">
+<title>STIQ Poster — post Soft Tennis IQ quiz videos to TikTok</title>
+<meta name="description" content="STIQ Poster is the publishing tool behind Soft Tennis IQ (@softtennis_iq). It posts the creator's own soft tennis quiz videos to the creator's own TikTok account.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://omicreate.github.io/stiq-poster/">
+<meta property="og:title" content="STIQ Poster">
+<meta property="og:description" content="Post Soft Tennis IQ quiz videos to TikTok.">
+<meta property="og:image" content="https://omicreate.github.io/stiq-poster/icon-1024.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="canonical" href="https://omicreate.github.io/stiq-poster/">
 <link rel="stylesheet" href="style.css">
+<style>
+  main { max-width: 760px; }
+  .hero { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
+  .hero img { width: 88px; height: 88px; border-radius: 20px; flex: none; }
+  .hero h1 { font-size: 28px; margin: 0; }
+  .lead { font-size: 17px; margin: 18px 0 8px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; margin: 20px 0 8px; }
+  .cta a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px; }
+  .cta .primary { background: var(--accent); color: #fff; }
+  .cta .ghost { border: 1px solid var(--accent); color: var(--accent); }
+  section { margin-top: 44px; }
+  h2 { font-size: 19px; margin: 0 0 12px; }
+  ol.steps { padding-left: 1.4em; display: grid; gap: 10px; }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; padding: 0; list-style: none; }
+  .features li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .features strong { display: block; margin-bottom: 2px; }
+  figure { margin: 16px 0 24px; }
+  figure img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); display: block; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 6px; }
+  .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .ja p, .ja li { font-size: 14px; }
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-2); }
+  footer nav { margin-top: 0; }
+</style>
 </head>
 <body>
 <main>
-  <h1>STIQ Poster</h1>
-  <p class="meta">omicreate</p>
+  <div class="hero">
+    <img src="icon-1024.png" alt="STIQ Poster app icon" width="88" height="88">
+    <div>
+      <h1>STIQ Poster</h1>
+      <p class="meta" style="margin:4px 0 0">by omicreate · for Soft Tennis IQ</p>
+    </div>
+  </div>
 
-  <p>STIQ Poster は、ソフトテニスの局面クイズ動画を配信している「ソフトテニスIQ」（@softtennis_iq）が、自分で制作した動画を自分のアカウントへ予約投稿するための社内ツールです。</p>
-  <ul>
-    <li>使うのは運営者本人のアカウントだけです。一般の利用者向けには提供していません。</li>
-    <li>運営者が承認した動画を、決めた時刻に TikTok へ投稿します。</li>
-    <li>ほかのユーザーの情報やコンテンツを読み取ったり保存したりはしません。</li>
-  </ul>
+  <p class="lead">STIQ Poster is the publishing tool behind <strong>Soft Tennis IQ</strong> (<a href="https://www.tiktok.com/@softtennis_iq">@softtennis_iq</a>), a creator who makes one-question soft tennis tactics quizzes as short vertical videos. It posts the creator's own videos to the creator's own TikTok account using TikTok Login Kit and the Content Posting API.</p>
+  <div class="cta">
+    <a class="primary" href="app.html">Open STIQ Poster</a>
+    <a class="ghost" href="https://omicreate.github.io/softtennis-iq/?src=poster">See the quiz app</a>
+  </div>
 
-  <hr>
+  <section>
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><strong>Connect TikTok.</strong> The operator signs in with TikTok (Login Kit). STIQ Poster reads only the basic profile (display name and avatar) to show which account is connected.</li>
+      <li><strong>Choose a video.</strong> The list shows quiz videos that the operator produced and approved for publishing. Each video can be previewed before posting.</li>
+      <li><strong>Review the post settings.</strong> Edit the caption, choose who can view the video from the options TikTok allows for the account, choose whether comments, Duet and Stitch are allowed, and disclose branded content if needed.</li>
+      <li><strong>Post to TikTok.</strong> The video is uploaded with the Content Posting API (Direct Post) and STIQ Poster shows the processing status until TikTok finishes publishing.</li>
+    </ol>
+  </section>
 
-  <p class="en">STIQ Poster is an internal tool used by "Soft Tennis IQ" (@softtennis_iq), a creator who publishes short soft-tennis quiz videos. It uploads videos that the creator produced and approved to the creator's own TikTok account at a scheduled time. It is used only for the operator's own account, is not offered to the public, and does not read or store any other user's data or content.</p>
+  <section>
+    <h2>Screens</h2>
+    <figure>
+      <img src="shot-connect.jpg" alt="Connect TikTok account screen" width="840" height="280" loading="lazy">
+      <figcaption>1. Connect the Soft Tennis IQ TikTok account.</figcaption>
+    </figure>
+    <div class="shots">
+      <figure>
+        <img src="shot-videos.jpg" alt="List of approved quiz videos" width="840" height="760" loading="lazy">
+        <figcaption>2. Choose one of the approved quiz videos.</figcaption>
+      </figure>
+      <figure>
+        <img src="shot-settings.jpg" alt="Caption, privacy and interaction settings before posting" width="840" height="640" loading="lazy">
+        <figcaption>3. Review caption, privacy and interaction settings, then post.</figcaption>
+      </figure>
+    </div>
+  </section>
 
-  <nav>
-    <a href="privacy.html">プライバシーポリシー / Privacy Policy</a>
-    <a href="terms.html">利用規約 / Terms of Service</a>
-    <a href="../">omicreate</a>
-  </nav>
+  <section>
+    <h2>Features</h2>
+    <ul class="features">
+      <li><strong>Own content only</strong>Posts videos the operator created and approved. Nothing is reposted from other users.</li>
+      <li><strong>Creator controls</strong>Privacy level, comments, Duet and Stitch are chosen for every post; nothing is preselected.</li>
+      <li><strong>Content disclosure</strong>Branded content can be declared before posting, following TikTok's rules.</li>
+      <li><strong>Status tracking</strong>Shows the upload and publishing status returned by TikTok.</li>
+      <li><strong>Local tokens</strong>Access tokens stay on the operator's computer and are never sent to other servers.</li>
+      <li><strong>Easy to revoke</strong>Access can be removed at any time from the TikTok app settings.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Who uses it</h2>
+    <p>STIQ Poster is used by the operator of Soft Tennis IQ for the operator's own account. It does not read, store or post other users' content or data. See the <a href="privacy.html">Privacy Policy</a> and <a href="terms.html">Terms of Service</a>.</p>
+  </section>
+
+  <section>
+    <h2>About Soft Tennis IQ</h2>
+    <p>Soft Tennis IQ publishes a daily one-question quiz about soft tennis positioning and decision-making for junior and high school players, coaches and parents. The free web app <a href="https://omicreate.github.io/softtennis-iq/?src=poster">Soft Tennis IQ</a> lets viewers review each quiz, practice the rules and plan formations.</p>
+    <p>Follow: <a href="https://www.tiktok.com/@softtennis_iq">TikTok</a> · <a href="https://www.instagram.com/softtennis_iq/">Instagram</a> · <a href="https://www.youtube.com/@softtennis_iq">YouTube</a></p>
+  </section>
+
+  <section class="ja">
+    <h2>日本語</h2>
+    <p>STIQ Poster は、ソフトテニスの局面クイズ動画を配信している「ソフトテニスIQ」（@softtennis_iq）が、自分で制作・承認した動画を自分の TikTok アカウントへ投稿するためのツールです。</p>
+    <ul>
+      <li>TikTok でログインし、投稿する動画を選び、説明文・公開範囲・コメントなどを確認してから投稿します。</li>
+      <li>使うのは運営者本人のアカウントだけです。ほかのユーザーの情報やコンテンツを読み取ったり保存したりはしません。</li>
+      <li>アクセストークンは運営者のパソコンにだけ保存します。</li>
+    </ul>
+  </section>
+
+  <footer>
+    <nav>
+      <a href="app.html">STIQ Poster</a>
+      <a href="privacy.html">プライバシーポリシー / Privacy Policy</a>
+      <a href="terms.html">利用規約 / Terms of Service</a>
+      <a href="https://www.instagram.com/softtennis_iq/">Contact (Instagram DM)</a>
+      <a href="../">omicreate</a>
+    </nav>
+    <p style="margin-top:10px">© 2026 omicreate</p>
+  </footer>
 </main>
 </body>
 </html>
